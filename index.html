@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOP DEVS | Giza Node v2.5</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --glass-bg: rgba(15, 23, 42, 0.75);
+            --neon-cyan: #00f2ff;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #020617;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed; inset: 0; background: #020617; z-index: 10000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .loader-bar { width: 250px; height: 2px; background: rgba(255,255,255,0.1); margin-top: 20px; overflow: hidden; position: relative; }
+        .loader-progress { position: absolute; height: 100%; width: 0%; background: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); animation: load 2s ease-in-out forwards; }
+        @keyframes load { 100% { width: 100%; } }
+
+        /* --- AUTH STYLES --- */
+        .auth-card { backdrop-filter: blur(20px); background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(0, 242, 255, 0.2); }
+        .auth-input { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 1rem; border-radius: 0.75rem; width: 100%; outline: none; transition: 0.3s; }
+        .auth-input:focus { border-color: var(--neon-cyan); }
+        .hidden-auth { display: none; }
+
+        /* --- GRID & GLASS --- */
+        .cyber-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px; perspective: 1000px; transform: rotateX(45deg); transform-origin: top; z-index: -1;
+        }
+
+        .glass-card {
+            backdrop-filter: blur(16px);
+            border-radius: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- BUTTON GLOW --- */
+        .btn-glow {
+            position: relative; overflow: hidden; transition: all 0.3s ease;
+        }
+        .btn-glow::after {
+            content: ''; position: absolute; top: -50%; left: -60%; width: 20%; height: 200%;
+            background: rgba(255, 255, 255, 0.3); transform: rotate(30deg); transition: 0.6s;
+        }
+        .btn-glow:hover::after { left: 140%; }
+
+        /* --- TEAM THEMES --- */
+        .theme-mazen { background: rgba(30, 58, 138, 0.6); }
+        .theme-assem { background: rgba(0, 0, 0, 0.8); border: 2px solid #ef4444; }
+        .theme-andrew { background: rgba(133, 77, 14, 0.6); }
+
+        .ig-icon-glow {
+            font-size: 5.5rem;
+            background: -webkit-linear-gradient(45deg, #f9ce34 0%, #ee2a7b 50%, #6228d7 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(238, 42, 123, 0.4));
+            transition: transform 0.4s ease;
+        }
+        .glass-card:hover .ig-icon-glow { transform: scale(1.1) rotate(8deg); }
+
+        /* --- PAGE ROUTING --- */
+        .page-content { display: none; }
+        .page-active { display: block; animation: introFade 0.8s ease-out forwards; }
+        @keyframes introFade { from { opacity: 0; transform: translateY(30px); filter: blur(15px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+    </style>
+</head>
+<body>
+
+    <!-- 1. PRELOADER -->
+    <div id="preloader">
+        <h2 class="text-2xl font-black italic tracking-widest text-white">INITIALIZING GIZA_NODE</h2>
+        <div class="loader-bar"><div class="loader-progress"></div></div>
+    </div>
+
+    <!-- 2. AUTH SYSTEM (For Everyone) -->
+    <div id="auth-overlay" class="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-6 hidden">
+        <div class="auth-card p-10 max-w-md w-full rounded-[2.5rem]">
+            <div id="login-form-box">
+                <h2 class="text-3xl font-black italic uppercase mb-2">Login</h2>
+                <p class="text-slate-500 text-xs mb-8 font-mono">WELCOME TO TOP DEVS HUB</p>
+                <div class="space-y-4">
+                    <input type="text" id="login-user" placeholder="USERNAME" class="auth-input">
+                    <input type="password" id="login-pass" placeholder="PASSWORD" class="auth-input">
+                    <button onclick="handleLogin()" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-black py-4 rounded-xl transition uppercase">Enter Node</button>
+                </div>
+                <p class="text-center mt-6 text-sm text-slate-400">New here? <span onclick="toggleAuth()" class="text-cyan-400 cursor-pointer">Create Account</span></p>
+            </div>
+
+            <div id="signup-form-box" class="hidden-auth">
+                <h2 class="text-3xl font-black italic uppercase mb-2">Join Us</h2>
+                <p class="text-slate-500 text-xs mb-8 font-mono">CREATE YOUR PROFILE</p>
+                <div class="space-y-4">
+                    <input type="text" id="signup-user" placeholder="USERNAME" class="auth-input">
+                    <input type="password" id="signup-pass" placeholder="PASSWORD" class="auth-input">
+                    <button onclick="handleSignUp()" class="w-full bg-white text-black font-black py-4 rounded-xl transition uppercase">Register</button>
+                </div>
+                <p class="text-center mt-6 text-sm text-slate-400">Have account? <span onclick="toggleAuth()" class="text-cyan-400 cursor-pointer">Login</span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="cyber-grid"></div>
+
+    <!-- 3. MAIN UI -->
+    <div id="main-ui" class="hidden">
+        <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 glass-card px-10 py-5 flex gap-8 items-center border-cyan-500/30 bg-slate-900/90">
+            <span onclick="showPage('home')" class="cursor-pointer font-black text-xs uppercase hover:text-cyan-400 transition">Home</span>
+            <div class="w-px h-4 bg-white/10"></div>
+            <span onclick="showPage('python')" class="cursor-pointer font-black text-xs uppercase hover:text-cyan-400 transition">Python</span>
+            <span onclick="showPage('scratch')" class="cursor-pointer font-black text-xs uppercase hover:text-cyan-400 transition">Scratch</span>
+            <button onclick="logout()" class="ml-4 text-red-500 font-bold text-[10px] uppercase border border-red-500/20 px-3 py-1 rounded-lg">Logout</button>
+        </nav>
+
+        <div id="home" class="page-content page-active pt-12">
+            <main class="max-w-7xl mx-auto p-6">
+                <!-- Hero Section with ALL buttons -->
+                <section class="mb-32">
+                    <div class="glass-card p-12 md:p-20 relative overflow-hidden bg-slate-900/70 border-cyan-500/20">
+                        <div class="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 blur-[120px]"></div>
+                        <p class="text-xs font-bold tracking-[0.6em] text-cyan-400 uppercase mb-6">Welcome Back, <span id="display-user" class="text-white"></span></p>
+                        <h1 class="text-6xl md:text-9xl font-extrabold tracking-tighter mb-8 leading-none">
+                            TOP DEVS <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">OPERATIONAL.</span>
+                        </h1>
+                        
+                        <!-- ALL THE BUTTONS ARE BACK -->
+                        <div class="flex flex-wrap gap-6">
+                            <a href="https://github.com/topdevseg-team" target="_blank" class="btn-glow px-10 py-5 rounded-2xl font-black text-sm uppercase tracking-widest text-white bg-gradient-to-tr from-[#24292e] via-[#444d56] to-[#24292e] shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:scale-105 flex items-center">
+                                <i class="fab fa-github mr-2"></i> GitHub
+                            </a>
+                            <a href="https://www.youtube.com/@TopDevsTeam" target="_blank" class="btn-glow px-10 py-5 rounded-2xl font-black text-sm uppercase tracking-widest text-white bg-gradient-to-tr from-[#FF0000] via-[#CD201F] to-[#b31217] shadow-[0_0_20px_rgba(255,0,0,0.2)] hover:scale-105 flex items-center">
+                                <i class="fab fa-youtube mr-2"></i> YouTube
+                            </a>
+                            <a href="https://www.instagram.com/top.devs/" target="_blank" class="btn-glow px-10 py-5 rounded-2xl font-black text-sm uppercase tracking-widest text-white bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] shadow-[0_0_20px_rgba(238,42,123,0.3)] hover:scale-105 flex items-center">
+                                <i class="fab fa-instagram mr-2"></i> IG
+                            </a>
+                            <a href="https://whatsapp.com/channel/0029Vb7Wj3q5kg7G09y3nN1w" target="_blank" class="btn-glow px-10 py-5 rounded-2xl font-black text-sm uppercase tracking-widest text-white bg-gradient-to-tr from-[#25D366] via-[#128C7E] to-[#075E54] shadow-[0_0_20px_rgba(37,211,102,0.2)] hover:scale-105 flex items-center">
+                                <i class="fab fa-whatsapp mr-2"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Squad Section -->
+                <section class="mb-32">
+                    <div class="flex items-center gap-6 mb-16">
+                        <h2 class="text-4xl font-black italic uppercase tracking-widest">The Squad</h2>
+                        <div class="h-px flex-1 bg-gradient-to-r from-cyan-500/50 to-transparent"></div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <div class="glass-card theme-mazen p-14 text-center cursor-pointer" onclick="window.open('https://www.instagram.com/mazen_mohamed_galal_1', '_blank')">
+                            <i class="fab fa-instagram ig-icon-glow mb-8"></i>
+                            <h3 class="text-2xl font-black uppercase italic">Mazen Mohamed</h3>
+                        </div>
+                        <div class="glass-card theme-assem p-14 text-center cursor-pointer" onclick="window.open('https://www.instagram.com/a.el.sherbiny', '_blank')">
+                            <i class="fab fa-instagram ig-icon-glow mb-8"></i>
+                            <h3 class="text-2xl font-black uppercase italic">Assem Sherbiny</h3>
+                        </div>
+                        <div class="glass-card theme-andrew p-14 text-center cursor-pointer" onclick="window.open('https://www.instagram.com/andrew._.hihi', '_blank')">
+                            <i class="fab fa-instagram ig-icon-glow mb-8"></i>
+                            <h3 class="text-2xl font-black uppercase italic">Andrew Alfons</h3>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Python Page -->
+        <div id="python" class="page-content pt-12 p-6">
+            <div class="max-w-7xl mx-auto glass-card p-12 bg-blue-950/20 border-blue-500/30">
+                <h1 class="text-6xl font-black italic mb-8 uppercase"><i class="fab fa-python text-[#3776AB] mr-4"></i>Python Core</h1>
+                <p class="text-slate-300 text-xl leading-relaxed mb-8">Engineering high-performance automation and back-end logic systems.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-8 bg-black/40 rounded-3xl border border-blue-500/20">
+                        <h4 class="text-blue-400 font-bold mb-2 uppercase">Back-end Systems</h4>
+                        <p class="text-sm text-slate-500">Managing Minecraft servers and Discord bots 24/7.</p>
+                    </div>
+                    <div class="p-8 bg-black/40 rounded-3xl border border-yellow-500/20">
+                        <h4 class="text-yellow-400 font-bold mb-2 uppercase">Automation</h4>
+                        <p class="text-sm text-slate-500">Writing scripts that handle the grind while we build.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scratch Page -->
+        <div id="scratch" class="page-content pt-12 p-6">
+            <div class="max-w-7xl mx-auto glass-card p-12 bg-orange-950/20 border-orange-500/30">
+                <h1 class="text-6xl font-black italic mb-8 uppercase"><i class="fas fa-puzzle-piece text-[#FFAB19] mr-4"></i>Scratch Logic</h1>
+                <p class="text-slate-300 text-xl leading-relaxed mb-8">Blueprintig complex game mechanics through visual logic blocks.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-8 bg-black/40 rounded-3xl border border-orange-500/20">
+                        <h4 class="text-orange-400 font-bold mb-2 uppercase">Visual Flow</h4>
+                        <p class="text-sm text-slate-500">Visualizing math and physics without syntax errors.</p>
+                    </div>
+                    <div class="p-8 bg-black/40 rounded-3xl border border-cyan-500/20">
+                        <h4 class="text-cyan-400 font-bold mb-2 uppercase">Engine Testing</h4>
+                        <p class="text-sm text-slate-500">Rapidly prototyping logic before Python porting.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Session & Loader
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('preloader').style.display = 'none';
+                const session = localStorage.getItem('active_user');
+                if (session) { launchUI(session); } 
+                else { document.getElementById('auth-overlay').classList.remove('hidden'); }
+            }, 2000);
+        };
+
+        // 2. Auth Actions
+        function toggleAuth() {
+            document.getElementById('login-form-box').classList.toggle('hidden-auth');
+            document.getElementById('signup-form-box').classList.toggle('hidden-auth');
+        }
+
+        function handleSignUp() {
+            const user = document.getElementById('signup-user').value;
+            const pass = document.getElementById('signup-pass').value;
+            if (user && pass) {
+                localStorage.setItem(`user_${user}`, pass);
+                alert("Account created! Welcome to Top Devs.");
+                toggleAuth();
+            }
+        }
+
+        function handleLogin() {
+            const user = document.getElementById('login-user').value;
+            const pass = document.getElementById('login-pass').value;
+            const storedPass = localStorage.getItem(`user_${user}`);
+            if (storedPass === pass) {
+                localStorage.setItem('active_user', user);
+                launchUI(user);
+            } else { alert("Wrong credentials."); }
+        }
+
+        function launchUI(name) {
+            document.getElementById('auth-overlay').classList.add('hidden');
+            document.getElementById('main-ui').classList.remove('hidden');
+            document.getElementById('display-user').innerText = name;
+        }
+
+        function logout() {
+            localStorage.removeItem('active_user');
+            location.reload();
+        }
+
+        // 3. Routing
+        function showPage(id) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('page-active'));
+            document.getElementById(id).classList.add('page-active');
+            window.scrollTo(0,0);
+        }
+    </script>
+</body>
+</html>
