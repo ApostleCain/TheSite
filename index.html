@@ -22,7 +22,7 @@
             overflow-x: hidden;
         }
 
-        /* --- PRELOADER --- */
+        /* --- UI UTILITIES --- */
         #preloader {
             position: fixed; inset: 0; background: #020617; z-index: 10000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -31,7 +31,6 @@
         .loader-progress { position: absolute; height: 100%; width: 0%; background: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); animation: load 2s ease-in-out forwards; }
         @keyframes load { 100% { width: 100%; } }
 
-        /* --- UI UTILITIES --- */
         .cyber-grid {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
@@ -45,21 +44,12 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .btn-glow { position: relative; overflow: hidden; transition: 0.3s; }
-        .btn-glow:hover { transform: scale(1.05); }
-
         .hidden-node { display: none !important; }
         .page-active { display: block !important; animation: introFade 0.6s ease-out forwards; }
         @keyframes introFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         .auth-input { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 1rem; border-radius: 0.75rem; width: 100%; outline: none; }
         .auth-input:focus { border-color: var(--neon-cyan); }
-
-        .ig-icon-glow {
-            font-size: 4rem;
-            background: -webkit-linear-gradient(45deg, #f9ce34 0%, #ee2a7b 50%, #6228d7 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
 
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(239, 68, 68, 0.3); border-radius: 10px; }
@@ -140,27 +130,10 @@
                         <div class="flex flex-wrap gap-4">
                             <a href="https://github.com/topdevseg-team" target="_blank" class="btn-glow px-8 py-4 rounded-xl font-black text-xs uppercase bg-[#24292e] flex items-center"><i class="fab fa-github mr-2"></i> GitHub</a>
                             <a href="https://www.youtube.com/@TopDevsTeam" target="_blank" class="btn-glow px-8 py-4 rounded-xl font-black text-xs uppercase bg-red-600 flex items-center"><i class="fab fa-youtube mr-2"></i> YouTube</a>
-                            <a href="https://www.instagram.com/top.devs/" target="_blank" class="btn-glow px-8 py-4 rounded-xl font-black text-xs uppercase bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center"><i class="fab fa-instagram mr-2"></i> Instagram</a>
                             <a href="https://whatsapp.com/channel/0029Vb7Wj3q5kg7G09y3nN1w" target="_blank" class="btn-glow px-8 py-4 rounded-xl font-black text-xs uppercase bg-[#25D366] flex items-center"><i class="fab fa-whatsapp mr-2"></i> WhatsApp</a>
                         </div>
                     </div>
                 </section>
-
-                <h2 class="text-3xl font-black uppercase mb-10 italic">The Squad</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div onclick="window.open('https://instagram.com/mazen_mohamed_galal_1')" class="glass-card p-10 text-center bg-blue-900/10 cursor-pointer">
-                        <i class="fab fa-instagram ig-icon-glow mb-4"></i>
-                        <p class="font-black uppercase">Mazen Mohamed</p>
-                    </div>
-                    <div onclick="window.open('https://instagram.com/a.el.sherbiny')" class="glass-card p-10 text-center bg-red-900/10 border-red-500/20 cursor-pointer">
-                        <i class="fab fa-instagram ig-icon-glow mb-4"></i>
-                        <p class="font-black uppercase">Assem Sherbiny</p>
-                    </div>
-                    <div onclick="window.open('https://instagram.com/andrew._.hihi')" class="glass-card p-10 text-center bg-yellow-900/10 cursor-pointer">
-                        <i class="fab fa-instagram ig-icon-glow mb-4"></i>
-                        <p class="font-black uppercase">Andrew Alfons</p>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -168,26 +141,16 @@
             <div class="max-w-6xl mx-auto text-center">
                 <h1 class="text-5xl font-black italic text-purple-400 mb-12 uppercase">Gamer Suite</h1>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313822857')" class="glass-card p-8 bg-slate-800/40 border-orange-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Flappy Bird</button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313820182')" class="glass-card p-8 bg-slate-800/40 border-yellow-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Subway</button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313821391')" class="glass-card p-8 bg-slate-800/40 border-blue-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Cubes</button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313820503')" class="glass-card p-8 bg-slate-800/40 border-cyan-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Geometry Wave</button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313819502')" class="glass-card p-8 bg-slate-800/40 border-green-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Geometry Dash</button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313818770')" class="glass-card p-8 bg-slate-800/40 border-red-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">NFS</button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313818192')" class="glass-card p-8 bg-slate-800/40 border-indigo-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Level Devil</button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313814783')" class="glass-card p-8 bg-slate-800/40 border-pink-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">The Devil Ball</button>
+                    <button onclick="window.open('https://scratch.mit.edu/projects/1313819502')" class="glass-card p-8 bg-slate-800/40 border-green-500/20 hover:scale-105 transition font-bold uppercase text-xs">Geometry Dash</button>
+                    <button onclick="window.open('https://scratch.mit.edu/projects/1313818770')" class="glass-card p-8 bg-slate-800/40 border-red-500/20 hover:scale-105 transition font-bold uppercase text-xs">NFS</button>
                 </div>
             </div>
         </div>
 
         <div id="db-page" class="page-content hidden-node pt-32 px-6">
-            <div class="max-w-4xl mx-auto glass-card p-10 bg-slate-900/90 border-cyan-500/30">
+            <div class="max-w-4xl mx-auto glass-card p-10 bg-slate-900/90 border-cyan-500/30 text-center">
                 <h1 class="text-4xl font-black italic text-cyan-400 mb-6 uppercase">Node Database</h1>
-                <div class="space-y-4">
-                    <div class="glass-card p-6 bg-white/5 flex justify-between"><span>Mazen Mohamed</span><span class="text-cyan-500">ID: 001</span></div>
-                    <div class="glass-card p-6 bg-white/5 flex justify-between"><span>Assem Sherbiny</span><span class="text-cyan-500">ID: 002</span></div>
-                    <div class="glass-card p-6 bg-white/5 flex justify-between"><span>Andrew Alfons</span><span class="text-cyan-500">ID: 003</span></div>
-                </div>
+                <p class="text-slate-400 font-mono">Public registry of Top Devs members.</p>
             </div>
         </div>
 
@@ -198,18 +161,19 @@
                         <p class="text-[10px] font-black uppercase text-red-500 mb-2">Registered Nodes</p>
                         <h4 id="admin-user-count" class="text-4xl font-bold">0</h4>
                     </div>
-                    <div class="glass-card p-8 bg-slate-900/60 border-white/10 text-center">
-                        <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Security Status</p>
-                        <h4 class="text-4xl font-bold text-green-500 italic">SECURE</h4>
+                    <div class="glass-card p-8 bg-slate-900/60 border-white/10 text-center flex flex-col justify-center">
+                         <p class="text-[10px] font-black uppercase text-slate-400 mb-2">System Status</p>
+                         <span class="text-green-500 font-bold uppercase tracking-widest">Operational</span>
                     </div>
-                    <div class="glass-card p-8 bg-red-600/10 border-red-500/20 flex flex-col justify-center">
-                        <button onclick="nuclearReset()" class="bg-red-600 hover:bg-red-700 text-white font-black py-3 rounded-xl transition uppercase text-[10px] tracking-widest shadow-lg shadow-red-500/20">Wipe System Data</button>
+                    <div class="glass-card p-8 bg-red-600/10 border-red-500/20 flex flex-col gap-3 justify-center">
+                        <button onclick="nuclearReset()" class="bg-red-600 hover:bg-red-700 text-white font-black py-2 rounded-lg transition uppercase text-[10px]">Wipe My Data</button>
+                        <button onclick="triggerGlobalReset()" class="bg-orange-600 hover:bg-orange-700 text-white font-black py-2 rounded-lg transition uppercase text-[10px]">Force Global Reset</button>
                     </div>
                 </div>
 
                 <div class="grid lg:grid-cols-2 gap-8">
                     <div class="glass-card p-8 bg-slate-900/90 border-white/5">
-                        <h3 class="text-xl font-black italic text-red-500 mb-6 uppercase tracking-tighter">User Directory</h3>
+                        <h3 class="text-xl font-black italic text-red-500 mb-6 uppercase">User Directory</h3>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs font-mono">
                                 <thead class="text-slate-500 border-b border-white/5">
@@ -221,9 +185,9 @@
                     </div>
 
                     <div class="glass-card p-8 bg-black/60 border-red-500/20">
-                        <h3 class="text-xs font-black uppercase text-red-500 mb-4 flex justify-between"><span>Console Log</span> <span class="animate-pulse">●</span></h3>
+                        <h3 class="text-xs font-black uppercase text-red-500 mb-4">Console Log</h3>
                         <div id="admin-terminal-out" class="space-y-2 font-mono text-[10px] text-red-400 h-64 overflow-y-auto custom-scrollbar">
-                            <p>> Executive console online...</p>
+                            <p>> Terminal initialized...</p>
                         </div>
                     </div>
                 </div>
@@ -234,10 +198,20 @@
     <script>
         let currentUser = "";
 
-        // 1. Initial State
+        // --- 1. INITIALIZATION ---
         window.onload = () => {
             setTimeout(() => {
                 document.getElementById('preloader').style.display = 'none';
+
+                // CHECK FOR GLOBAL RESET SIGNAL
+                if (localStorage.getItem('global_reset_signal') === 'true') {
+                    alert("SERVER RESET: The administrator has reset the node. You have been logged out.");
+                    localStorage.removeItem('active_user'); 
+                    localStorage.removeItem('global_reset_signal'); 
+                    location.reload();
+                    return;
+                }
+
                 const session = localStorage.getItem('active_user');
                 if (session) {
                     currentUser = session;
@@ -248,7 +222,7 @@
             }, 2000);
         };
 
-        // 2. Auth Logic
+        // --- 2. AUTHENTICATION ---
         function toggleAuth(isSignup) {
             document.getElementById('login-box').classList.toggle('hidden-node', isSignup);
             document.getElementById('signup-box').classList.toggle('hidden-node', !isSignup);
@@ -259,7 +233,7 @@
             const p = document.getElementById('signup-pass').value.trim();
             if(u && p) {
                 localStorage.setItem(`user_${u}`, p);
-                alert("REGISTRATION SUCCESS. PLEASE LOGIN.");
+                alert("REGISTRATION SUCCESS.");
                 toggleAuth(false);
             }
         }
@@ -274,7 +248,12 @@
             } else { alert("ACCESS DENIED."); }
         }
 
-        // 3. Selection Logic
+        function logout() {
+            localStorage.removeItem('active_user');
+            location.reload();
+        }
+
+        // --- 3. NAVIGATION ---
         function launchSelector() {
             document.getElementById('auth-overlay').classList.add('hidden-node');
             document.getElementById('main-ui').classList.add('hidden-node');
@@ -283,35 +262,25 @@
             
             const isAdmin = currentUser.toLowerCase().includes("admin");
             document.getElementById('admin-path-btn').classList.toggle('hidden-node', !isAdmin);
-            
-            const grid = document.getElementById('path-grid');
-            grid.className = isAdmin ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6";
         }
 
         function setPage(pageId) {
             document.getElementById('role-selector').classList.add('hidden-node');
             document.getElementById('main-ui').classList.remove('hidden-node');
             document.getElementById('nav-user-display').innerText = currentUser;
-            
             document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden-node'));
             document.getElementById(pageId + '-page').classList.add('page-active');
 
-            if(pageId === 'admin') {
-                updateAdminStats();
-                adminLog("Database synchronization complete.");
+            if(pageId === 'admin') { 
+                updateAdminStats(); 
+                adminLog("Admin session authenticated.");
             }
-            
             window.scrollTo(0,0);
         }
 
         function backToPaths() { launchSelector(); }
 
-        function logout() {
-            localStorage.removeItem('active_user');
-            location.reload();
-        }
-
-        // --- ADMIN SYSTEM TOOLS ---
+        // --- 4. ADMIN SYSTEMS ---
         function updateAdminStats() {
             const list = document.getElementById('admin-user-list');
             const countDisplay = document.getElementById('admin-user-count');
@@ -323,7 +292,7 @@
                     count++;
                     const user = key.replace('user_', '');
                     const pass = localStorage.getItem(key);
-                    list.innerHTML += `<tr class="border-b border-white/5"><td class="py-4 text-white font-bold">${user}</td><td class="py-4 text-red-500/60">${pass}</td><td class="py-4 text-[10px] text-green-500">ACTIVE</td></tr>`;
+                    list.innerHTML += `<tr class="border-b border-white/5"><td class="py-4 text-white font-bold">${user}</td><td class="py-4 text-red-500/60">${pass}</td><td class="py-4 text-green-500">READY</td></tr>`;
                 }
             }
             countDisplay.innerText = count;
@@ -336,10 +305,17 @@
         }
 
         function nuclearReset() {
-            if(confirm("CRITICAL: Wipe all Node data and reset system?")) {
+            if(confirm("Wipe ALL local users and reset system?")) {
                 localStorage.clear();
-                adminLog("SYSTEM WIPE COMMAND EXECUTED.");
-                setTimeout(() => location.reload(), 1000);
+                location.reload();
+            }
+        }
+
+        function triggerGlobalReset() {
+            if(confirm("Kick all users and broadcast Server Reset message?")) {
+                localStorage.setItem('global_reset_signal', 'true');
+                adminLog("GLOBAL RESET BROADCASTED.");
+                setTimeout(() => logout(), 1000);
             }
         }
     </script>
