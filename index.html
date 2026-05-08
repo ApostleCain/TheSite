@@ -12,7 +12,6 @@
         
         :root {
             --neon-cyan: #00f2ff;
-            --neon-purple: #bc13fe;
             --admin-red: #ff003c;
         }
 
@@ -47,7 +46,7 @@
         }
 
         .btn-glow { position: relative; overflow: hidden; transition: 0.3s; }
-        .btn-glow:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(0, 242, 255, 0.2); }
+        .btn-glow:hover { transform: scale(1.05); }
 
         .hidden-node { display: none !important; }
         .page-active { display: block !important; animation: introFade 0.6s ease-out forwards; }
@@ -55,178 +54,176 @@
 
         .auth-input { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 1rem; border-radius: 0.75rem; width: 100%; outline: none; }
         .auth-input:focus { border-color: var(--neon-cyan); }
-        
-        /* Squad Themes */
-        .theme-mazen { background: rgba(30, 58, 138, 0.3); }
-        .theme-assem { background: rgba(0, 0, 0, 0.6); border: 2px solid #ef4444; }
-        .theme-andrew { background: rgba(133, 77, 14, 0.3); }
+
+        .ig-icon-glow {
+            font-size: 4rem;
+            background: -webkit-linear-gradient(45deg, #f9ce34 0%, #ee2a7b 50%, #6228d7 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(239, 68, 68, 0.3); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- 1. PRELOADER -->
     <div id="preloader">
-        <h2 class="text-2xl font-black italic tracking-widest text-white uppercase">Initializing Giza_Node</h2>
+        <h2 class="text-2xl font-black italic tracking-widest text-white">INITIALIZING GIZA_NODE</h2>
         <div class="loader-bar"><div class="loader-progress"></div></div>
     </div>
 
     <div class="cyber-grid"></div>
 
-    <!-- 2. AUTH SYSTEM -->
     <div id="auth-overlay" class="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center p-6 hidden-node">
         <div class="glass-card p-10 max-w-md w-full bg-slate-900/80 border-cyan-500/20">
-            <!-- Login Form -->
             <div id="login-box">
                 <h2 class="text-3xl font-black italic uppercase mb-2">Access Node</h2>
-                <p class="text-slate-500 text-xs mb-8 font-mono">TOP DEVS HUB LOGIN</p>
                 <div class="space-y-4">
                     <input type="text" id="login-user" placeholder="USERNAME" class="auth-input">
                     <input type="password" id="login-pass" placeholder="PASSWORD" class="auth-input">
                     <button onclick="handleLogin()" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-black py-4 rounded-xl transition uppercase">Authorize</button>
-                    <p class="text-center text-xs text-slate-400 mt-4">No account? <span onclick="switchAuth('signup')" class="text-cyan-400 cursor-pointer underline">Sign Up</span></p>
+                    <p class="text-center text-xs text-slate-400 mt-4">New? <span onclick="toggleAuth(true)" class="text-cyan-400 cursor-pointer">Sign Up</span></p>
                 </div>
             </div>
-            <!-- Signup Form -->
             <div id="signup-box" class="hidden-node">
-                <h2 class="text-3xl font-black italic uppercase mb-2">Create Profile</h2>
-                <p class="text-slate-500 text-xs mb-8 font-mono">NEW RECRUIT REGISTRATION</p>
+                <h2 class="text-3xl font-black italic uppercase mb-2">New Profile</h2>
                 <div class="space-y-4">
                     <input type="text" id="signup-user" placeholder="USERNAME" class="auth-input">
                     <input type="password" id="signup-pass" placeholder="PASSWORD" class="auth-input">
-                    <button onclick="handleSignup()" class="w-full bg-white text-black font-black py-4 rounded-xl transition uppercase">Create Account</button>
-                    <p class="text-center text-xs text-slate-400 mt-4">Have account? <span onclick="switchAuth('login')" class="text-cyan-400 cursor-pointer underline">Login</span></p>
+                    <button onclick="handleSignup()" class="w-full bg-white text-black font-black py-4 rounded-xl transition uppercase">Register</button>
+                    <p class="text-center text-xs text-slate-400 mt-4">Back to <span onclick="toggleAuth(false)" class="text-cyan-400 cursor-pointer">Login</span></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 3. PATH SELECTOR -->
     <div id="role-selector" class="fixed inset-0 z-[9998] bg-[#020617] flex items-center justify-center p-6 hidden-node">
         <div class="max-w-5xl w-full text-center">
-            <h2 class="text-5xl font-black italic mb-12 uppercase tracking-tighter">Choose Your Path</h2>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div onclick="setRole('dev')" class="glass-card p-10 bg-blue-950/20 border-blue-500/30 cursor-pointer group hover:bg-blue-900/30">
-                    <i class="fas fa-code text-5xl text-blue-400 mb-6 group-hover:scale-110 transition"></i>
-                    <h3 class="text-2xl font-bold uppercase">Developer</h3>
+            <h2 class="text-5xl font-black italic mb-4 uppercase tracking-tighter">Choose Path</h2>
+            <p id="welcome-msg" class="text-cyan-400 font-mono text-xs mb-12 uppercase"></p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="path-grid">
+                <div onclick="setPage('home')" class="glass-card p-8 bg-blue-950/20 border-blue-500/30 cursor-pointer hover:bg-blue-900/30 transition">
+                    <i class="fas fa-home text-4xl text-blue-400 mb-4"></i>
+                    <h3 class="font-bold uppercase">Home Hub</h3>
                 </div>
-                <div onclick="setRole('gamer')" class="glass-card p-10 bg-purple-950/20 border-purple-500/30 cursor-pointer group hover:bg-purple-900/30">
-                    <i class="fas fa-gamepad text-5xl text-purple-400 mb-6 group-hover:scale-110 transition"></i>
-                    <h3 class="text-2xl font-bold uppercase">Gamer</h3>
+                <div onclick="setPage('gamer')" class="glass-card p-8 bg-purple-950/20 border-purple-500/30 cursor-pointer hover:bg-purple-900/30 transition">
+                    <i class="fas fa-gamepad text-4xl text-purple-400 mb-4"></i>
+                    <h3 class="font-bold uppercase">Gamer Suite</h3>
                 </div>
-                <div onclick="promptAdmin()" class="glass-card p-10 bg-red-950/20 border-red-500/30 cursor-pointer group hover:bg-red-900/40">
-                    <i class="fas fa-user-shield text-5xl text-red-500 mb-6 group-hover:scale-110 transition"></i>
-                    <h3 class="text-2xl font-bold uppercase text-red-500">Admins</h3>
+                <div onclick="setPage('db')" class="glass-card p-8 bg-slate-800/40 border-white/20 cursor-pointer hover:bg-slate-700/40 transition">
+                    <i class="fas fa-database text-4xl text-white mb-4"></i>
+                    <h3 class="font-bold uppercase text-white">Database</h3>
+                </div>
+                <div id="admin-path-btn" onclick="setPage('admin')" class="glass-card p-8 bg-red-950/20 border-red-500/30 cursor-pointer hover:bg-red-900/40 transition hidden-node">
+                    <i class="fas fa-terminal text-4xl text-red-500 mb-4"></i>
+                    <h3 class="font-bold uppercase text-red-500">Admin Hub</h3>
                 </div>
             </div>
+            <button onclick="logout()" class="mt-12 text-slate-500 hover:text-white text-xs uppercase tracking-widest font-bold">Terminate Session</button>
         </div>
     </div>
 
-    <!-- 4. MAIN UI -->
     <div id="main-ui" class="hidden-node">
         <nav class="fixed top-6 left-1/2 -translate-x-1/2 z-50 glass-card px-8 py-4 flex gap-6 items-center border-white/10 bg-slate-900/90 shadow-2xl">
-            <span class="text-cyan-400 font-black text-xs uppercase" id="nav-user">User</span>
+            <button onclick="backToPaths()" class="text-cyan-400 font-bold text-[10px] uppercase border border-cyan-500/20 px-3 py-1 rounded-lg">← Back to Paths</button>
             <div class="w-px h-4 bg-white/10"></div>
-            <button onclick="logout()" class="text-red-500 font-bold text-[10px] uppercase border border-red-500/20 px-3 py-1 rounded-lg">Logout</button>
+            <span id="nav-user-display" class="font-black text-[10px] uppercase text-white tracking-widest">User</span>
         </nav>
 
-        <!-- DEVELOPER VIEW -->
-        <div id="dev-home" class="page-content hidden-node pt-32 px-6 pb-20">
-            <div class="max-w-6xl mx-auto">
-                <div class="glass-card p-12 bg-slate-900/60 border-blue-500/20 mb-12">
-                    <h1 class="text-7xl font-black italic mb-6">DEV_CORE</h1>
-                    <p class="text-blue-400 font-mono text-sm mb-10">>> TOP DEVS TEAM INFRASTRUCTURE ONLINE</p>
-                    <div class="flex flex-wrap gap-4">
-                        <a href="https://github.com/topdevseg-team" target="_blank" class="bg-white text-black px-8 py-4 rounded-xl font-black uppercase text-xs flex items-center gap-2"><i class="fab fa-github"></i> GitHub</a>
-                        <a href="https://www.youtube.com/@TopDevsTeam" target="_blank" class="bg-red-600 text-white px-8 py-4 rounded-xl font-black uppercase text-xs flex items-center gap-2"><i class="fab fa-youtube"></i> YouTube</a>
-                        <a href="https://www.instagram.com/top.devs/" target="_blank" class="bg-gradient-to-tr from-yellow-400 to-purple-600 text-white px-8 py-4 rounded-xl font-black uppercase text-xs flex items-center gap-2"><i class="fab fa-instagram"></i> Instagram</a>
-                        <a href="https://whatsapp.com/channel/0029Vb7Wj3q5kg7G09y3nN1w" target="_blank" class="bg-green-600 text-white px-8 py-4 rounded-xl font-black uppercase text-xs flex items-center gap-2"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        <div id="home-page" class="page-content hidden-node pt-32 px-6 pb-20">
+            <div class="max-w-7xl mx-auto">
+                <section class="mb-20">
+                    <div class="glass-card p-12 md:p-20 relative overflow-hidden bg-slate-900/70 border-cyan-500/20">
+                        <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter mb-8 leading-none">
+                            TOP DEVS <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600">OPERATIONAL.</span>
+                        </h1>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="https://github.com/topdevseg-team" target="_blank" class="btn-glow px-8 py-4 rounded-xl font-black text-xs uppercase bg-[#24292e] flex items-center"><i class="fab fa-github mr-2"></i> GitHub</a>
+                            <a href="https://www.youtube.com/@TopDevsTeam" target="_blank" class="btn-glow px-8 py-4 rounded-xl font-black text-xs uppercase bg-red-600 flex items-center"><i class="fab fa-youtube mr-2"></i> YouTube</a>
+                            <a href="https://www.instagram.com/top.devs/" target="_blank" class="btn-glow px-8 py-4 rounded-xl font-black text-xs uppercase bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] flex items-center"><i class="fab fa-instagram mr-2"></i> Instagram</a>
+                            <a href="https://whatsapp.com/channel/0029Vb7Wj3q5kg7G09y3nN1w" target="_blank" class="btn-glow px-8 py-4 rounded-xl font-black text-xs uppercase bg-[#25D366] flex items-center"><i class="fab fa-whatsapp mr-2"></i> WhatsApp</a>
+                        </div>
                     </div>
-                </div>
+                </section>
 
-                <!-- Squad Section -->
-                <h2 class="text-3xl font-black uppercase italic mb-8 border-l-4 border-cyan-500 pl-4">The Squad</h2>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="glass-card theme-mazen p-10 text-center">
-                        <i class="fab fa-instagram text-4xl mb-4 text-blue-400"></i>
-                        <h3 class="font-bold uppercase italic">Mazen Mohamed</h3>
-                        <p class="text-[10px] opacity-50 mt-2">LEAD DEVELOPER</p>
+                <h2 class="text-3xl font-black uppercase mb-10 italic">The Squad</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div onclick="window.open('https://instagram.com/mazen_mohamed_galal_1')" class="glass-card p-10 text-center bg-blue-900/10 cursor-pointer">
+                        <i class="fab fa-instagram ig-icon-glow mb-4"></i>
+                        <p class="font-black uppercase">Mazen Mohamed</p>
                     </div>
-                    <div class="glass-card theme-assem p-10 text-center">
-                        <i class="fab fa-instagram text-4xl mb-4 text-red-500"></i>
-                        <h3 class="font-bold uppercase italic">Assem Sherbiny</h3>
-                        <p class="text-[10px] opacity-50 mt-2">CORE ENGINEER</p>
+                    <div onclick="window.open('https://instagram.com/a.el.sherbiny')" class="glass-card p-10 text-center bg-red-900/10 border-red-500/20 cursor-pointer">
+                        <i class="fab fa-instagram ig-icon-glow mb-4"></i>
+                        <p class="font-black uppercase">Assem Sherbiny</p>
                     </div>
-                    <div class="glass-card theme-andrew p-10 text-center">
-                        <i class="fab fa-instagram text-4xl mb-4 text-yellow-500"></i>
-                        <h3 class="font-bold uppercase italic text-yellow-500">Andrew Alfons</h3>
-                        <p class="text-[10px] opacity-50 mt-2">SYSTEMS ARCHITECT</p>
+                    <div onclick="window.open('https://instagram.com/andrew._.hihi')" class="glass-card p-10 text-center bg-yellow-900/10 cursor-pointer">
+                        <i class="fab fa-instagram ig-icon-glow mb-4"></i>
+                        <p class="font-black uppercase">Andrew Alfons</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- GAMER VIEW -->
-        <div id="gamer-home" class="page-content hidden-node pt-32 px-6 pb-20">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-12">
-                    <h1 class="text-5xl font-black italic text-purple-400 uppercase tracking-widest">Gamer Suite</h1>
-                    <p class="text-slate-500 text-[10px] font-mono mt-2">SCRATCH LOGIC ENGINE ACTIVE</p>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313822857')" class="glass-card p-8 bg-slate-800/40 border-orange-500/20 hover:bg-orange-500/10 btn-glow">
-                        <i class="fas fa-feather text-3xl mb-4 text-orange-400"></i>
-                        <span class="block font-black uppercase text-xs">Flappy Bird</span>
-                    </button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313820182')" class="glass-card p-8 bg-slate-800/40 border-yellow-500/20 hover:bg-yellow-500/10 btn-glow">
-                        <i class="fas fa-subway text-3xl mb-4 text-yellow-400"></i>
-                        <span class="block font-black uppercase text-xs">Subway</span>
-                    </button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313821391')" class="glass-card p-8 bg-slate-800/40 border-blue-500/20 hover:bg-blue-500/10 btn-glow">
-                        <i class="fas fa-cube text-3xl mb-4 text-blue-400"></i>
-                        <span class="block font-black uppercase text-xs">Cubes</span>
-                    </button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313820503')" class="glass-card p-8 bg-slate-800/40 border-cyan-500/20 hover:bg-cyan-500/10 btn-glow">
-                        <i class="fas fa-water text-3xl mb-4 text-cyan-400"></i>
-                        <span class="block font-black uppercase text-xs">Geo Wave</span>
-                    </button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313819502')" class="glass-card p-8 bg-slate-800/40 border-purple-500/20 hover:bg-purple-500/10 btn-glow">
-                        <i class="fas fa-running text-3xl mb-4 text-purple-400"></i>
-                        <span class="block font-black uppercase text-xs">Geo Dash</span>
-                    </button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313818770')" class="glass-card p-8 bg-slate-800/40 border-red-500/20 hover:bg-red-500/10 btn-glow">
-                        <i class="fas fa-car text-3xl mb-4 text-red-400"></i>
-                        <span class="block font-black uppercase text-xs">NFS</span>
-                    </button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313818192')" class="glass-card p-8 bg-slate-800/40 border-green-500/20 hover:bg-green-500/10 btn-glow">
-                        <i class="fas fa-ghost text-3xl mb-4 text-green-400"></i>
-                        <span class="block font-black uppercase text-xs">Level Devil</span>
-                    </button>
-                    <button onclick="window.open('https://scratch.mit.edu/projects/1313814783')" class="glass-card p-8 bg-slate-800/40 border-pink-500/20 hover:bg-pink-500/10 btn-glow">
-                        <i class="fas fa-circle text-3xl mb-4 text-pink-400"></i>
-                        <span class="block font-black uppercase text-xs">Devil Ball</span>
-                    </button>
+        <div id="gamer-page" class="page-content hidden-node pt-32 px-6 pb-20">
+            <div class="max-w-6xl mx-auto text-center">
+                <h1 class="text-5xl font-black italic text-purple-400 mb-12 uppercase">Gamer Suite</h1>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <button onclick="window.open('https://scratch.mit.edu/projects/1313822857')" class="glass-card p-8 bg-slate-800/40 border-orange-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Flappy Bird</button>
+                    <button onclick="window.open('https://scratch.mit.edu/projects/1313820182')" class="glass-card p-8 bg-slate-800/40 border-yellow-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Subway</button>
+                    <button onclick="window.open('https://scratch.mit.edu/projects/1313821391')" class="glass-card p-8 bg-slate-800/40 border-blue-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Cubes</button>
+                    <button onclick="window.open('https://scratch.mit.edu/projects/1313820503')" class="glass-card p-8 bg-slate-800/40 border-cyan-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Geometry Wave</button>
+                    <button onclick="window.open('https://scratch.mit.edu/projects/1313819502')" class="glass-card p-8 bg-slate-800/40 border-green-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Geometry Dash</button>
+                    <button onclick="window.open('https://scratch.mit.edu/projects/1313818770')" class="glass-card p-8 bg-slate-800/40 border-red-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">NFS</button>
+                    <button onclick="window.open('https://scratch.mit.edu/projects/1313818192')" class="glass-card p-8 bg-slate-800/40 border-indigo-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">Level Devil</button>
+                    <button onclick="window.open('https://scratch.mit.edu/projects/1313814783')" class="glass-card p-8 bg-slate-800/40 border-pink-500/20 hover:scale-105 transition font-bold uppercase text-xs tracking-widest">The Devil Ball</button>
                 </div>
             </div>
         </div>
 
-        <!-- ADMIN VIEW (Restored Squad list) -->
-        <div id="admin-home" class="page-content hidden-node pt-32 px-6">
-            <div class="max-w-4xl mx-auto">
-                <div class="glass-card p-12 bg-red-950/10 border-red-500/40">
-                    <h1 class="text-6xl font-black italic text-red-500 mb-2 uppercase">Admin Hub</h1>
-                    <p class="font-mono text-xs opacity-50 mb-12 tracking-widest uppercase">Verified Squad Controls</p>
-                    <div class="space-y-4">
-                        <div class="glass-card p-6 bg-white/5 flex justify-between items-center">
-                            <span class="font-bold uppercase italic">Mazen Mohamed</span>
-                            <span class="text-[10px] bg-red-600 px-3 py-1 rounded font-black">LEAD</span>
+        <div id="db-page" class="page-content hidden-node pt-32 px-6">
+            <div class="max-w-4xl mx-auto glass-card p-10 bg-slate-900/90 border-cyan-500/30">
+                <h1 class="text-4xl font-black italic text-cyan-400 mb-6 uppercase">Node Database</h1>
+                <div class="space-y-4">
+                    <div class="glass-card p-6 bg-white/5 flex justify-between"><span>Mazen Mohamed</span><span class="text-cyan-500">ID: 001</span></div>
+                    <div class="glass-card p-6 bg-white/5 flex justify-between"><span>Assem Sherbiny</span><span class="text-cyan-500">ID: 002</span></div>
+                    <div class="glass-card p-6 bg-white/5 flex justify-between"><span>Andrew Alfons</span><span class="text-cyan-500">ID: 003</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-page" class="page-content hidden-node pt-32 px-6 pb-20">
+            <div class="max-w-6xl mx-auto space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-card p-8 bg-red-950/20 border-red-500/30">
+                        <p class="text-[10px] font-black uppercase text-red-500 mb-2">Registered Nodes</p>
+                        <h4 id="admin-user-count" class="text-4xl font-bold">0</h4>
+                    </div>
+                    <div class="glass-card p-8 bg-slate-900/60 border-white/10 text-center">
+                        <p class="text-[10px] font-black uppercase text-slate-400 mb-2">Security Status</p>
+                        <h4 class="text-4xl font-bold text-green-500 italic">SECURE</h4>
+                    </div>
+                    <div class="glass-card p-8 bg-red-600/10 border-red-500/20 flex flex-col justify-center">
+                        <button onclick="nuclearReset()" class="bg-red-600 hover:bg-red-700 text-white font-black py-3 rounded-xl transition uppercase text-[10px] tracking-widest shadow-lg shadow-red-500/20">Wipe System Data</button>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="glass-card p-8 bg-slate-900/90 border-white/5">
+                        <h3 class="text-xl font-black italic text-red-500 mb-6 uppercase tracking-tighter">User Directory</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs font-mono">
+                                <thead class="text-slate-500 border-b border-white/5">
+                                    <tr><th class="pb-4">ALIAS</th><th class="pb-4">PASSKEY</th><th class="pb-4">STATUS</th></tr>
+                                </thead>
+                                <tbody id="admin-user-list" class="text-slate-300"></tbody>
+                            </table>
                         </div>
-                        <div class="glass-card p-6 bg-white/5 flex justify-between items-center">
-                            <span class="font-bold uppercase italic">Assem Sherbiny</span>
-                            <span class="text-[10px] bg-blue-600 px-3 py-1 rounded font-black">DEV</span>
-                        </div>
-                        <div class="glass-card p-6 bg-white/5 flex justify-between items-center">
-                            <span class="font-bold uppercase italic">Andrew Alfons</span>
-                            <span class="text-[10px] bg-purple-600 px-3 py-1 rounded font-black">SYSTEMS</span>
+                    </div>
+
+                    <div class="glass-card p-8 bg-black/60 border-red-500/20">
+                        <h3 class="text-xs font-black uppercase text-red-500 mb-4 flex justify-between"><span>Console Log</span> <span class="animate-pulse">●</span></h3>
+                        <div id="admin-terminal-out" class="space-y-2 font-mono text-[10px] text-red-400 h-64 overflow-y-auto custom-scrollbar">
+                            <p>> Executive console online...</p>
                         </div>
                     </div>
                 </div>
@@ -235,13 +232,16 @@
     </div>
 
     <script>
-        // 1. Session and Startup
+        let currentUser = "";
+
+        // 1. Initial State
         window.onload = () => {
             setTimeout(() => {
                 document.getElementById('preloader').style.display = 'none';
-                const activeUser = localStorage.getItem('active_user');
-                if (activeUser) {
-                    showSelector(activeUser);
+                const session = localStorage.getItem('active_user');
+                if (session) {
+                    currentUser = session;
+                    launchSelector();
                 } else {
                     document.getElementById('auth-overlay').classList.remove('hidden-node');
                 }
@@ -249,61 +249,97 @@
         };
 
         // 2. Auth Logic
-        function switchAuth(type) {
-            document.getElementById('login-box').classList.toggle('hidden-node', type === 'signup');
-            document.getElementById('signup-box').classList.toggle('hidden-node', type === 'login');
+        function toggleAuth(isSignup) {
+            document.getElementById('login-box').classList.toggle('hidden-node', isSignup);
+            document.getElementById('signup-box').classList.toggle('hidden-node', !isSignup);
         }
 
         function handleSignup() {
-            const user = document.getElementById('signup-user').value.trim();
-            const pass = document.getElementById('signup-pass').value.trim();
-            if (user && pass) {
-                localStorage.setItem(`user_${user}`, pass);
-                alert("PROFILE CREATED. PLEASE LOGIN.");
-                switchAuth('login');
-            } else {
-                alert("ENTER USERNAME AND PASSWORD.");
+            const u = document.getElementById('signup-user').value.trim();
+            const p = document.getElementById('signup-pass').value.trim();
+            if(u && p) {
+                localStorage.setItem(`user_${u}`, p);
+                alert("REGISTRATION SUCCESS. PLEASE LOGIN.");
+                toggleAuth(false);
             }
         }
 
         function handleLogin() {
-            const user = document.getElementById('login-user').value.trim();
-            const pass = document.getElementById('login-pass').value.trim();
-            const storedPass = localStorage.getItem(`user_${user}`);
-            
-            if (storedPass === pass && pass !== null) {
-                localStorage.setItem('active_user', user);
-                showSelector(user);
-            } else {
-                alert("INVALID CREDENTIALS.");
-            }
+            const u = document.getElementById('login-user').value.trim();
+            const p = document.getElementById('login-pass').value.trim();
+            if(localStorage.getItem(`user_${u}`) === p && p !== "") {
+                currentUser = u;
+                localStorage.setItem('active_user', u);
+                launchSelector();
+            } else { alert("ACCESS DENIED."); }
         }
 
-        function showSelector(username) {
+        // 3. Selection Logic
+        function launchSelector() {
             document.getElementById('auth-overlay').classList.add('hidden-node');
+            document.getElementById('main-ui').classList.add('hidden-node');
             document.getElementById('role-selector').classList.remove('hidden-node');
-            document.getElementById('nav-user').innerText = username;
+            document.getElementById('welcome-msg').innerText = `IDENTIFIED: ${currentUser}`;
+            
+            const isAdmin = currentUser.toLowerCase().includes("admin");
+            document.getElementById('admin-path-btn').classList.toggle('hidden-node', !isAdmin);
+            
+            const grid = document.getElementById('path-grid');
+            grid.className = isAdmin ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6";
         }
+
+        function setPage(pageId) {
+            document.getElementById('role-selector').classList.add('hidden-node');
+            document.getElementById('main-ui').classList.remove('hidden-node');
+            document.getElementById('nav-user-display').innerText = currentUser;
+            
+            document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden-node'));
+            document.getElementById(pageId + '-page').classList.add('page-active');
+
+            if(pageId === 'admin') {
+                updateAdminStats();
+                adminLog("Database synchronization complete.");
+            }
+            
+            window.scrollTo(0,0);
+        }
+
+        function backToPaths() { launchSelector(); }
 
         function logout() {
             localStorage.removeItem('active_user');
             location.reload();
         }
 
-        // 3. Navigation & Roles
-        function setRole(role) {
-            document.getElementById('role-selector').classList.add('hidden-node');
-            document.getElementById('main-ui').classList.remove('hidden-node');
-            document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden-node'));
-            document.getElementById(role + '-home').classList.add('page-active');
+        // --- ADMIN SYSTEM TOOLS ---
+        function updateAdminStats() {
+            const list = document.getElementById('admin-user-list');
+            const countDisplay = document.getElementById('admin-user-count');
+            list.innerHTML = "";
+            let count = 0;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('user_')) {
+                    count++;
+                    const user = key.replace('user_', '');
+                    const pass = localStorage.getItem(key);
+                    list.innerHTML += `<tr class="border-b border-white/5"><td class="py-4 text-white font-bold">${user}</td><td class="py-4 text-red-500/60">${pass}</td><td class="py-4 text-[10px] text-green-500">ACTIVE</td></tr>`;
+                }
+            }
+            countDisplay.innerText = count;
         }
 
-        function promptAdmin() {
-            const secret = prompt("VERIFY ADMIN IDENTITY:");
-            if (secret === "TopDevsAdminsTab") {
-                setRole('admin');
-            } else {
-                alert("ACCESS REJECTED: INCORRECT ADMIN KEY");
+        function adminLog(msg) {
+            const term = document.getElementById('admin-terminal-out');
+            term.innerHTML += `<p>> [${new Date().toLocaleTimeString()}] ${msg}</p>`;
+            term.scrollTop = term.scrollHeight;
+        }
+
+        function nuclearReset() {
+            if(confirm("CRITICAL: Wipe all Node data and reset system?")) {
+                localStorage.clear();
+                adminLog("SYSTEM WIPE COMMAND EXECUTED.");
+                setTimeout(() => location.reload(), 1000);
             }
         }
     </script>
